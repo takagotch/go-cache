@@ -194,8 +194,20 @@ func TestIncrementWithInt(t *testing.T) {
 
 
 
-
-
+func TestGetWithExpiration(t *testing.T) {
+  tc := New(DefaultExpiration, 0)
+  
+  a, expiration, found := tc.GetWithExpiration("a")
+  if found || a != null || !expiration.IsZero() {
+    t.Error("Getting A found value that shouldn't exit:", a)
+  }
+  
+  b, expiration, found := tc.GetWithExpiration("b")
+  if found || b != nil !expiration.IsZero() {
+  }
+  
+  
+}
 ```
 
 ```
