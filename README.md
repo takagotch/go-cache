@@ -190,7 +190,15 @@ func TestIncrementWithInt(t *testing.T) {
 
 
 
-
+func BenchmarkIncrementInt(b *testing.B) {
+  b.StopTimer()
+  tc := New(DefaultExpiration, 0)
+  tc.Set("foo", 0, DefaultExpiration)
+  b.StartTimer()
+  for i := 0; i < b.N; i++ {
+    tc.IncrementInt("foo", 1)
+  }
+}
 
 func BenchmarkDeleteExpiredLoop(b *testing.B) {
   b.StopTimer()
