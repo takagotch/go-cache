@@ -192,7 +192,19 @@ func TestIncrementWithInt(t *testing.T) {
 
 
 
-
+func BenchmarkDeleteExpiredLoop(b *testing.B) {
+  b.StopTimer()
+  tc := New(5*time.Minute, 0)
+  tc.mu.Lock()
+  for i := 0; i < 1000000; i++ {
+    tc.set(strconv.Itoa(i), "bar", DefaultExpiration)
+  }
+  tc.mu.Unlock()
+  b.StartTimer()
+  for i := 0; i < b.N; i++ {
+    tc.DeleteExpirated()
+  }
+}
 
 func TestGetWithExpiration(t *testing.T) {
   tc := New(DefaultExpiration, 0)
